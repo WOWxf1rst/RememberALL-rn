@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetch } from 'expo/fetch';
 import { Text, View } from 'react-native';
 
 export default function Index() {
@@ -6,13 +7,13 @@ export default function Index() {
     queryKey: ['ping'],
     queryFn: async () => {
       const response = await fetch('http://localhost:3000/ping');
-      return await response;
+      return await response.json();
     },
   });
 
-  if (isPending) return 'Loading...';
+  if (isPending) return <Text>Loading...</Text>;
 
-  if (error) return 'An error has occurred: ' + error.message;
+  if (error) return <Text>An error has occurred: {error.message}</Text>;
   console.log(data);
   return (
     <View
@@ -22,7 +23,7 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>{data.ping}</Text>
     </View>
   );
 }
